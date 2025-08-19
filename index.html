@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomeSifu - Manage 100 Properties in 1 Minute a Day | Free Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="font-inter bg-white text-gray-900 overflow-x-hidden">
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-md z-50 border-b border-gray-200 shadow-sm">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <img src="images/homesifu-logo.png" alt="HomeSifu" class="h-18 md:h-24 w-auto">
+            </div>
+            <div class="flex items-center space-x-3">
+                <select id="languageSelector" class="bg-white border border-gray-200 rounded-md px-3 py-1.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <option value="en">🇺🇸 EN</option>
+                    <option value="zh">🇨🇳 中</option>
+                    <option value="ms">🇲🇾 BM</option>
+                </select>
+                <button onclick="scrollToSection('appointment')" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1.5 rounded-md font-medium text-sm transition-colors" data-translate="bookCall" data-lang="en">
+                    Book 15-Min Call
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="pt-20 pb-12 bg-gradient-to-br from-blue-50 to-indigo-50">
+        <div class="container mx-auto px-4">
+            <div class="grid lg:grid-cols-2 gap-8 items-center">
+                <div class="space-y-5">
+                    <div class="h-6 mb-2"></div>
+                    <div class="inline-flex items-center px-6 py-4 bg-blue-100 text-blue-700 rounded-full text-lg font-medium shadow-sm">
+                        <span class="text-yellow-500 mr-3 text-2xl">⭐</span>
+                        <span data-translate="trustedBy">Trusted by <span class="text-2xl font-bold">5000+</span> Malaysian Landlords</span>
+                    </div>
+                    <h1 class="text-4xl lg:text-5xl font-bold text-gray-900 leading-tight" data-translate="heroTitle">
+                        Manage 100 Properties in 
+                        <span class="text-blue-600">1 Minute</span> a Day
+                    </h1>
+                    <p class="text-lg lg:text-xl text-gray-600 leading-relaxed" data-translate="heroSubtitle">
+                        Join 5000+ Malaysian landlords who've transformed their property management with AI-powered automation. Smart devices, automated rent collection, and real-time analytics.
+                    </p>
+                    <div class="flex flex-wrap gap-4 text-sm text-gray-600">
+                        <div class="flex items-center">
+                            <span class="text-blue-600 font-semibold mr-2">90%</span>
+                            <span data-translate="automationRate">Automation Rate</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-blue-600 font-semibold mr-2">24/7</span>
+                            <span data-translate="aiMonitoring">AI Monitoring</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-blue-600 font-semibold mr-2">100%</span>
+                            <span data-translate="mobileReady">Mobile Ready</span>
+                        </div>
+                    </div>
+                    <button onclick="scrollToSection('appointment')" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold text-base transition-colors" data-translate="bookStrategyCall">
+                        Book Your 15-Min Strategy Call
+                    </button>
+                </div>
+                <div class="relative">
+                    <div class="w-full max-w-md mx-auto">
+                        <div class="h-12 mb-4"></div>
+                        <div class="bg-gray-900 rounded-3xl p-3 shadow-2xl">
+                            <div class="bg-white rounded-2xl p-6">
+                                <img src="images/app-screenshot.jpg" alt="HomeSifu App" class="w-full rounded-xl">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4" data-translate="problemTitle">The Property Management Challenge</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto" data-translate="problemSubtitle">
+                    Traditional property management is time-consuming, error-prone, and stressful. Manual rent collection, tenant screening, and maintenance tracking drain your time and energy.
+                </p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="text-center p-8 rounded-2xl bg-gray-50 hover:bg-gray-100 transition-colors">
+                    <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4" data-translate="timeConsuming">Time-Consuming Manual Work</h3>
+                    <p class="text-gray-600" data-translate="timeConsumingDesc">Hours spent on rent collection, tenant communication, and maintenance coordination every month.</p>
+                </div>
+                <div class="text-center p-8 rounded-2xl bg-gray-50 hover:bg-gray-100 transition-colors">
+                    <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4" data-translate="paymentDelays">Payment Delays & Errors</h3>
+                    <p class="text-gray-600" data-translate="paymentDelaysDesc">Late rent payments, manual tracking errors, and time-consuming follow-ups with tenants.</p>
+                </div>
+                <div class="text-center p-8 rounded-2xl bg-gray-50 hover:bg-gray-100 transition-colors">
+                    <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4" data-translate="lackInsights">Lack of Real-Time Insights</h3>
+                    <p class="text-gray-600" data-translate="lackInsightsDesc">No visibility into property performance, tenant behavior, or energy usage patterns.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution Section -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4" data-translate="solutionTitle">The HomeSifu Solution</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto" data-translate="solutionSubtitle">
+                    AI-powered property management platform that automates 90% of daily routines through smart device integration and intelligent workflows.
+                </p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
+                    <div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.61-2.94a3 3 0 11-4.24-4.24 3 3 0 014.24 4.24z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4" data-translate="smartIntegration">Smart Device Integration</h3>
+                    <p class="text-gray-600 mb-4" data-translate="smartIntegrationDesc">Smart locks, meters, and payment gateways automate access control, utility monitoring, and rent collection.</p>
+                    <div class="inline-flex items-center px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium" data-translate="automatedTasks">
+                        Automated 90% of tasks
+                    </div>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
+                    <div class="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4" data-translate="aiAnalytics">AI-Powered Analytics</h3>
+                    <p class="text-gray-600 mb-4" data-translate="aiAnalyticsDesc">Real-time insights into tenant behavior, energy usage, and rent trends for smarter decision-making.</p>
+                    <div class="inline-flex items-center px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium" data-translate="dataInsights">
+                        Data-driven insights
+                    </div>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
+                    <div class="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4" data-translate="autopilotManagement">Autopilot Management</h3>
+                    <p class="text-gray-600 mb-4" data-translate="autopilotDesc">AI handles tenant onboarding, rent collection, and maintenance while you focus on what matters most.</p>
+                    <div class="inline-flex items-center px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-medium" data-translate="handsFree">
+                        Hands-free operation
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4" data-translate="howItWorksTitle">How the App Works</h2>
+            </div>
+            
+            <!-- Step 1 -->
+            <div class="grid lg:grid-cols-2 gap-12 items-center mb-20">
+                <div class="space-y-6">
+                    <div class="text-blue-600 font-semibold text-lg">/01</div>
+                    <h3 class="text-3xl font-bold text-gray-900" data-translate="step1Title">Smart Device Integration & Payment Gateway</h3>
+                    <p class="text-lg text-gray-600 leading-relaxed" data-translate="step1Desc">
+                        Revolutionize your property management with our app. By integrating smart lock, smart meter, and payment gateway, we automate 90% of daily routines. Streamline your tasks and enjoy more time for what matters.
+                    </p>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-gray-900 rounded-2xl p-2 shadow-lg">
+                        <img src="images/smart-lock.jpg" alt="Smart Lock" class="w-full rounded-xl">
+                    </div>
+                    <div class="bg-gray-900 rounded-2xl p-2 shadow-lg">
+                        <img src="images/smart-meter.jpg" alt="Smart Meter" class="w-full rounded-xl">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="grid lg:grid-cols-2 gap-8 items-center mb-12">
+                <div class="order-2 lg:order-1">
+                    <div class="bg-gray-900 rounded-2xl p-2 shadow-lg max-w-sm mx-auto">
+                        <img src="images/real-time-analytics.jpg" alt="Real-time Analytics" class="w-full rounded-xl">
+                    </div>
+                </div>
+                <div class="space-y-4 order-1 lg:order-2">
+                    <div class="text-blue-600 font-semibold text-base">/02</div>
+                    <h3 class="text-2xl font-bold text-gray-900" data-translate="step2Title">Real-Time Analytics with Smarter Outcomes</h3>
+                    <p class="text-base text-gray-600 leading-relaxed" data-translate="step2Desc">
+                        HomeSifu helps property owners unlock insights from their rental operations with real-time data analytics. From tracking tenant behavior to monitoring energy usage and rent trends, our AI-powered platform transforms raw data into actionable intelligence so you can make smarter decisions, reduce costs, and optimize every unit you manage.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="grid lg:grid-cols-2 gap-8 items-center">
+                <div class="space-y-4">
+                    <div class="text-blue-600 font-semibold text-base">/03</div>
+                    <h3 class="text-2xl font-bold text-gray-900" data-translate="step3Title">Manage your properties & tenants with Autopilot</h3>
+                    <p class="text-base text-gray-600 leading-relaxed" data-translate="step3Desc">
+                        Embrace the future of property management with our AI-driven dashboard, operating your tenant management on autopilot. Our intelligent system automates every aspect, from tenant onboarding and rent collection to maintenance management and financial tracking, ensuring smooth operations while notifying you only of issues and irregularities.
+                    </p>
+                </div>
+                <div>
+                    <div class="bg-gray-900 rounded-2xl p-2 shadow-lg max-w-sm mx-auto">
+                        <img src="images/owner-dashboard.jpg" alt="Owner Dashboard" class="w-full rounded-xl">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                            <h2 class="text-4xl font-bold text-gray-900 mb-4" data-translate="testimonialsTitle">
+                Join 5000+ Successful Malaysian Landlords
+            </h2>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-2xl shadow-lg">
+                    <div class="flex text-yellow-400 mb-4">
+                        <span>★★★★★</span>
+                    </div>
+                    <blockquote class="text-gray-600 italic mb-6" data-translate="joanQuote">
+                        "Choosing HomeSifu's subscription plan with hardware integration was a no brainer. Instead of spending over 5K upfront on smart devices, we realized we didn't need to own them; they were just tools for the system to work seamlessly. Now, we can focus on what truly matters to us."
+                    </blockquote>
+                    <div class="font-semibold text-gray-900">Joan Wong</div>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-lg">
+                    <div class="flex text-yellow-400 mb-4">
+                        <span>★★★★★</span>
+                    </div>
+                    <blockquote class="text-gray-600 italic mb-6" data-translate="raymondQuote">
+                        "🌟 I always have a 💆‍♂️ when it comes to tenant management, especially rental collection. With HomeSifu's automated rental collection integration, everything is automated. I won't need to worry about this anymore. Even following up on rental reminders and issuing letters of demand is done automatically by the system. 🙌"
+                    </blockquote>
+                    <div class="font-semibold text-gray-900">Raymond Chua</div>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-lg">
+                    <div class="flex text-yellow-400 mb-4">
+                        <span>★★★★★</span>
+                    </div>
+                    <blockquote class="text-gray-600 italic mb-6" data-translate="aisyahQuote">
+                        "🎉 I absolutely love HomeSifu's VR Tour service! Taking a VR tour used to cost upto 5K/property, but with their subscription plan, it's included for free. Thanks to VR tours, I've rented out my units up to x4 faster than before, saving me unnecessary traveling costs."
+                    </blockquote>
+                    <div class="font-semibold text-gray-900">Aisyah</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Appointment Section -->
+    <section id="appointment" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-gray-900 mb-6" data-translate="appointmentTitle">Book a 15-Minute Strategy Call</h2>
+                <p class="text-xl text-gray-600 mb-12" data-translate="appointmentSubtitle">
+                    Discover how HomeSifu can transform your property management. Book your preferred 15-min time slot and get a personalized demo.
+                </p>
+                
+                <div class="grid md:grid-cols-3 gap-6 mb-8">
+                    <div class="flex items-center justify-center p-4 bg-blue-50 rounded-lg">
+                                                 <svg class="w-6 h-6 text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                         </svg>
+                         <span class="text-gray-700" data-translate="minuteSession">15-Minute Session</span>
+                    </div>
+                    <div class="flex items-center justify-center p-4 bg-blue-50 rounded-lg">
+                        <svg class="w-6 h-6 text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.61-2.94a3 3 0 11-4.24-4.24 3 3 0 014.24 4.24z"></path>
+                        </svg>
+                        <span class="text-gray-700" data-translate="personalizedDemo">Personalized Demo</span>
+                    </div>
+                    <div class="flex items-center justify-center p-4 bg-blue-50 rounded-lg">
+                        <svg class="w-6 h-6 text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span class="text-gray-700" data-translate="noObligation">No Obligation</span>
+                    </div>
+                </div>
+
+                <form id="appointmentForm" class="bg-gray-50 p-10 rounded-3xl shadow-xl max-w-2xl mx-auto">
+                    <div class="grid md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2" data-translate="fullName">Full Name *</label>
+                            <input type="text" id="userName" name="userName" required class="w-full h-14 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2" data-translate="email">Email *</label>
+                            <input type="email" id="userEmail" name="userEmail" required class="w-full h-14 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2" data-translate="phoneNumber">Phone Number *</label>
+                            <input type="tel" id="userPhone" name="userPhone" required placeholder="+60 12-3456 7890" class="w-full h-14 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2" data-translate="currentWorkflow">Current Workflow</label>
+                            <select id="currentWorkflow" name="currentWorkflow" class="w-full h-14 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none">
+                                <option value="" data-translate="selectCurrentProcess">Select your current process</option>
+                                <option value="manual" data-translate="manual">Manual management</option>
+                                <option value="spreadsheet" data-translate="spreadsheet">Spreadsheet tracking</option>
+                                <option value="basic-software" data-translate="basicSoftware">Basic property software</option>
+                                <option value="other" data-translate="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2" data-translate="propertyType">Property Type</label>
+                            <select id="propertyType" name="propertyType" class="w-full h-14 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none">
+                                <option value="" data-translate="selectPropertyType">Select property type</option>
+                                <option value="sublet" data-translate="subletRoomRental">Sublet/Room Rental</option>
+                                <option value="wholeUnit" data-translate="wholeUnitRental">Whole Unit Rental</option>
+                                <option value="mix" data-translate="mixOfBoth">Mix of both</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2" data-translate="mainChallenge">Main Challenge</label>
+                            <select id="mainChallenge" name="mainChallenge" class="w-full h-14 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none">
+                                <option value="" data-translate="selectBiggestChallenge">Select your biggest challenge</option>
+                                <option value="rent-collection" data-translate="rentCollection">Rent collection</option>
+                                <option value="tenant-management" data-translate="tenantManagement">Tenant management</option>
+                                <option value="maintenance" data-translate="maintenance">Maintenance coordination</option>
+                                <option value="time-management" data-translate="timeManagement">Time management</option>
+                                <option value="other" data-translate="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6 mb-8">
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2" data-translate="portfolioSize">Portfolio Size</label>
+                            <select id="portfolioSize" name="portfolioSize" class="w-full h-14 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none">
+                                <option value="" data-translate="selectPortfolioSize">Select portfolio size</option>
+                                <option value="1-5" data-translate="properties1to5">1-5 properties</option>
+                                <option value="6-20" data-translate="properties6to20">6-20 properties</option>
+                                <option value="21-50" data-translate="properties21to50">21-50 properties</option>
+                                <option value="50+" data-translate="properties50plus">50+ properties</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2" data-translate="potentialObjections">Potential Objections</label>
+                            <select id="potentialObjections" name="potentialObjections" class="w-full h-14 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none">
+                                <option value="" data-translate="selectMainConcern">Select main concern</option>
+                                <option value="cost" data-translate="costConcerns">Cost concerns</option>
+                                <option value="complexity" data-translate="systemComplexity">System complexity</option>
+                                <option value="integration" data-translate="integrationIssues">Integration issues</option>
+                                <option value="time" data-translate="implementationTime">Implementation time</option>
+                                <option value="none" data-translate="noConcerns">No concerns</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white h-14 px-8 rounded-lg font-semibold text-lg transition-colors" data-translate="bookStrategyCall">
+                        Book Your Strategy Call
+                    </button>
+                    
+                    <p class="text-sm text-gray-500 mt-4 text-center" data-translate="privacyNotice">
+                        By submitting this form, you agree to receive communications from HomeSifu. We respect your privacy and will never share your information.
+                    </p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-4xl font-bold text-white mb-6" data-translate="ctaTitle">Ready to Transform Your Property Management?</h2>
+            <p class="text-xl text-blue-100 mb-8 max-w-3xl mx-auto" data-translate="ctaSubtitle">
+                Join 5000+ Malaysian landlords who've automated their operations with HomeSifu. Start your journey to stress-free property management today.
+            </p>
+            <div class="flex items-center justify-center mb-8">
+                <svg class="w-8 h-8 text-green-300 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                                        <span class="text-white font-semibold" data-translate="moneyBackGuarantee">90-Day Money-Back Guarantee</span>
+            </div>
+            <button onclick="scrollToSection('appointment')" class="bg-white hover:bg-gray-100 text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg transition-colors" data-translate="bookNow">
+                Book Your 15-Min Strategy Call Now
+            </button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div class="footer-brand">
+                    <div class="flex items-center mb-4">
+                        <img src="images/homesifu-logo.png" alt="HomeSifu" class="h-18 md:h-24 w-auto">
+                    </div>
+                    <p class="text-gray-400 mb-4" data-translate="footerDescription">
+                        AI-powered property management platform that automates 90% of daily routines through smart device integration.
+                    </p>
+                </div>
+                
+                <div class="footer-links">
+                    <h4 class="text-lg font-semibold mb-4" data-translate="quickLinks">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><button onclick="scrollToSection('appointment')" class="text-gray-400 hover:text-white transition-colors bg-transparent border-none p-0 text-left" data-translate="bookCall">Book 15-Min Strategy Call</button></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors" data-translate="features">Features</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors" data-translate="pricing">Pricing</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors" data-translate="support">Support</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-company">
+                    <h4 class="text-lg font-semibold mb-4" data-translate="company">Company</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors" data-translate="aboutUs">About Us</a></li>
+                        <li><a href="https://www.homesifu.io/privacy-policy" target="_blank" class="text-gray-400 hover:text-white transition-colors">Privacy Policy</a></li>
+                        <li><a href="https://www.homesifu.io/terms-conditions" target="_blank" class="text-gray-400 hover:text-white transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors" data-translate="careers">Careers</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-contact">
+                    <h4 class="text-lg font-semibold mb-4" data-translate="contactUs">Contact Us</h4>
+                    <p class="text-gray-400 mb-2">Email: aiot@homesifu.io</p>
+                    <p class="text-gray-400 mb-2">Phone: +603-61516057</p>
+                    <p class="text-gray-400">27-2, Jalan Prima Setapak 5</p>
+                    <p class="text-gray-400">53100 Setapak, Kuala Lumpur</p>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center">
+                <p class="text-gray-400" data-translate="copyright">&copy; 2025 HomeSifu. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
