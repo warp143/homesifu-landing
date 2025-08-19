@@ -37,7 +37,7 @@ function setupScrollAnimations() {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
     };
-
+    
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -46,7 +46,7 @@ function setupScrollAnimations() {
             }
         });
     }, observerOptions);
-
+    
     // Observe elements for animation
     const animateElements = document.querySelectorAll('.bg-white, .bg-gray-50, .bg-gradient-to-br');
     animateElements.forEach(el => observer.observe(el));
@@ -144,13 +144,13 @@ function validateForm() {
     const form = document.getElementById('appointmentForm');
     const requiredFields = form.querySelectorAll('[required]');
     let isValid = true;
-
+    
     requiredFields.forEach(field => {
         if (!validateField(field)) {
             isValid = false;
         }
     });
-
+    
     return isValid;
 }
 
@@ -221,12 +221,56 @@ function showSuccessMessage() {
     let phone = formData.get('userPhone') || '';
     phone = phone.replace(/\D/g, ''); // Remove all non-digits
     
+    // Get all form values
+    const userName = formData.get('userName') || '';
+    const userEmail = formData.get('userEmail') || '';
+    const currentWorkflow = formData.get('currentWorkflow') || '';
+    const propertyType = formData.get('propertyType') || '';
+    const mainChallenge = formData.get('mainChallenge') || '';
+    const portfolioSize = formData.get('portfolioSize') || '';
+    const potentialObjections = formData.get('potentialObjections') || '';
+    
+    // Build comprehensive summary for the phone field
+    const phoneSummary = `Phone: +${phone}
+
+PROPERTY MANAGEMENT PROFILE:
+Current Process: ${currentWorkflow}
+Property Type: ${propertyType}
+Main Challenge: ${mainChallenge}
+Portfolio Size: ${portfolioSize}
+Main Concern: ${potentialObjections}
+
+This information helps us prepare a personalized demo for your specific needs.`;
+    
+    // Build comprehensive notes for Calendly
+    const notes = `Property Management Consultation Request:
+
+Current Process: ${currentWorkflow}
+Property Type: ${propertyType}
+Main Challenge: ${mainChallenge}
+Portfolio Size: ${portfolioSize}
+Main Concern: ${potentialObjections}
+
+This information helps us prepare a personalized demo for your specific needs.`;
+    
     // Build Calendly URL with pre-filled data
     const calendlyUrl = new URL('https://calendly.com/charlotteyong-homesifu/30min');
-    calendlyUrl.searchParams.set('name', formData.get('userName') || '');
-    calendlyUrl.searchParams.set('email', formData.get('userEmail') || '');
+    calendlyUrl.searchParams.set('name', userName);
+    calendlyUrl.searchParams.set('email', userEmail);
     calendlyUrl.searchParams.set('phone', phone);
     calendlyUrl.searchParams.set('phone_country', 'MY');
+    calendlyUrl.searchParams.set('notes', notes);
+    
+    // Try different Calendly custom field parameters for phone field with full summary
+    // Calendly often uses 'a1', 'a2', etc. for custom fields
+    calendlyUrl.searchParams.set('a1', phoneSummary);
+    calendlyUrl.searchParams.set('a2', phoneSummary);
+    calendlyUrl.searchParams.set('a3', phoneSummary);
+    
+    // Also try 'custom' parameters
+    calendlyUrl.searchParams.set('custom[phone]', phoneSummary);
+    calendlyUrl.searchParams.set('custom[Phone]', phoneSummary);
+    calendlyUrl.searchParams.set('custom[Phone Number]', phoneSummary);
     
     // Redirect to Calendly with pre-filled data
     window.location.href = calendlyUrl.toString();
@@ -349,17 +393,17 @@ function toggleMobileMenu() {
 // Lazy loading for images
 function setupLazyLoading() {
     const images = document.querySelectorAll('img[data-src]');
-    const imageObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                img.src = img.dataset.src;
-                img.classList.remove('lazy');
-                imageObserver.unobserve(img);
-            }
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.dataset.src;
+                    img.classList.remove('lazy');
+                    imageObserver.unobserve(img);
+                }
+            });
         });
-    });
-
+        
     images.forEach(img => imageObserver.observe(img));
 }
 

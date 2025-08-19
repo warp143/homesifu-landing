@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  homesifu-landing:
+    image: nginx:stable-alpine
+    container_name: homesifu-landing
+    ports:
+      - "8081:80"
+    volumes:
+      - ./:/usr/share/nginx/html:ro
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    restart: unless-stopped
+    networks:
+      - homesifu-network
+
+networks:
+  homesifu-network:
+    external: true
