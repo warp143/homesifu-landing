@@ -1,2 +1,0 @@
-INSERT INTO proxy_host (created_on, modified_on, owner_user_id, is_deleted, domain_names, forward_host, forward_port, access_list_id, certificate_id, ssl_forced, caching_enabled, block_exploits, advanced_config, meta, allow_websocket_upgrade, http2_support, forward_scheme, enabled, locations, hsts_enabled, hsts_subdomains) 
-VALUES (datetime('now'), datetime('now'), 1, 0, '["landing.homesifu.io"]', '127.0.0.1', 8082, 0, 0, 0, 0, 0, '', '{}', 0, 0, 'http', 1, '[]', 0, 0);
