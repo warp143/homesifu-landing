@@ -1,5 +1,100 @@
 // HomeSifu Landing Page JavaScript
 
+// Data Protection System - Client-side encryption for localStorage
+class DataProtection {
+    constructor() {
+        this.secretKey = 'homesifu-security-key-2025';
+        this.checkExpiringData();
+    }
+
+    // Encrypt data before storing
+    encryptData(data) {
+        try {
+            const encrypted = CryptoJS.AES.encrypt(JSON.stringify(data), this.secretKey).toString();
+            return encrypted;
+        } catch (error) {
+            console.warn('Encryption failed, storing as plain text:', error);
+            return data;
+        }
+    }
+
+    // Decrypt stored data
+    decryptData(encryptedData) {
+        try {
+            const bytes = CryptoJS.AES.decrypt(encryptedData, this.secretKey);
+            const decrypted = bytes.toString(CryptoJS.enc.Utf8);
+            return JSON.parse(decrypted);
+        } catch (error) {
+            console.warn('Decryption failed, returning as is:', error);
+            return encryptedData;
+        }
+    }
+
+    // Set expiring localStorage data
+    setExpiringData(key, data, hours = 24) {
+        const expiration = Date.now() + (hours * 60 * 60 * 1000);
+        const dataObject = {
+            data: data,
+            expiration: expiration,
+            created: Date.now()
+        };
+
+        const encrypted = this.encryptData(dataObject);
+        localStorage.setItem(key, encrypted);
+        return true;
+    }
+
+    // Get data with expiration check
+    getExpiringData(key) {
+        try {
+            const stored = localStorage.getItem(key);
+            if (!stored) return null;
+
+            const decrypted = this.decryptData(stored);
+            if (Date.now() > decrypted.expiration) {
+                localStorage.removeItem(key);
+                return null; // Data expired
+            }
+
+            return decrypted.data;
+        } catch (error) {
+            console.warn('Error retrieving expiring data:', error);
+            return null;
+        }
+    }
+
+    // Check and clean expired data
+    checkExpiringData() {
+        try {
+            for (let i = localStorage.length - 1; i >= 0; i--) {
+                const key = localStorage.key(i);
+                if (key.startsWith('exp_')) {
+                    const stored = localStorage.getItem(key);
+                    const decrypted = this.decryptData(stored);
+                    if (Date.now() > decrypted.expiration) {
+                        localStorage.removeItem(key);
+                    }
+                }
+            }
+        } catch (error) {
+            console.warn('Error checking expiring data:', error);
+        }
+    }
+
+    // Secure form data storage
+    storeFormData(formData, formId) {
+        return this.setExpiringData(`form_${formId}`, formData, 2); // 2 hours expiration
+    }
+
+    // Retrieve secure form data
+    getFormData(formId) {
+        return this.getExpiringData(`form_${formId}`);
+    }
+}
+
+// Initialize data protection
+const dataProtection = new DataProtection();
+
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize all functionality
     initializeHeaderScroll();
