@@ -73,17 +73,17 @@ def main():
     print(f"{get_timestamp()} 📊 Checking container status...")
     status_result = run_cmd("ssh -i config/homesifu-serverstatus_key.pem azureuser@52.230.106.42 'docker ps --format \"table {{.Names}}\t{{.Status}}\t{{.Ports}}\" | grep homesifu-website'", quiet=True)
 
-    if status_result.stdout and "Up" in status_result.stdout:
+    if status_result.stdout and "Up" in status_result.stdout.decode():
         print(f"{get_timestamp()} ✅ Container is running successfully")
         # Test if website is responding
         health_check = run_cmd("curl -s -o /dev/null -w '%{http_code}' https://landing.homesifu.io", quiet=True)
-        if health_check.stdout == "200":
+        if health_check.stdout.decode().strip() == "200":
             print(f"{get_timestamp()} 🏥 Health check passed - Website responding correctly")
         else:
             print(f"{get_timestamp()} ⚠️  Health check failed - Website may not be responding")
     else:
         print(f"{get_timestamp()} ❌ Container failed to start properly")
-        print(f"{get_timestamp()} 🔍 Debug info: {status_result.stdout}")
+        print(f"{get_timestamp()} 🔍 Debug info: {status_result.stdout.decode()}")
         sys.exit(1)
 
     # Clean up temporary files on server
