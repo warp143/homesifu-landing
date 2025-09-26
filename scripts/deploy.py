@@ -35,6 +35,23 @@ def main():
     run_cmd("ssh -i config/homesifu-serverstatus_key.pem azureuser@52.230.106.42 'docker stop homesifu-website 2>/dev/null || true'", quiet=True)
     run_cmd("ssh -i config/homesifu-serverstatus_key.pem azureuser@52.230.106.42 'docker rm homesifu-website 2>/dev/null || true'", quiet=True)
 
+    # Clean up any orphaned containers
+    print(f"{get_timestamp()} 🧹 Cleaning up orphaned containers...")
+    run_cmd("ssh -i config/homesifu-serverstatus_key.pem azureuser@52.230.106.42 'docker container prune -f'", quiet=True)
+
+    # Clean up dangling Docker images
+    print(f"{get_timestamp()} 🧹 Cleaning up unused Docker images...")
+    run_cmd("ssh -i config/homesifu-serverstatus_key.pem azureuser@52.230.106.42 'docker image prune -f'", quiet=True)
+
+    # Clean up unused Docker volumes
+    print(f"{get_timestamp()} 🧹 Cleaning up unused Docker volumes...")
+    run_cmd("ssh -i config/homesifu-serverstatus_key.pem azureuser@52.230.106.42 'docker volume prune -f'", quiet=True)
+
+    # Clean up Docker build cache and unused networks
+    print(f"{get_timestamp()} 🧹 Cleaning up Docker build cache...")
+    run_cmd("ssh -i config/homesifu-serverstatus_key.pem azureuser@52.230.106.42 'docker builder prune -f'", quiet=True)
+    run_cmd("ssh -i config/homesifu-serverstatus_key.pem azureuser@52.230.106.42 'docker network prune -f'", quiet=True)
+
     # Create simple nginx container with our files (internal access only - no external port)
     print(f"{get_timestamp()} 🔧 Creating new container...")
     run_cmd("ssh -i config/homesifu-serverstatus_key.pem azureuser@52.230.106.42 'docker run -d --name homesifu-website --restart unless-stopped nginx:alpine'")
@@ -52,17 +69,26 @@ def main():
     print(f"{get_timestamp()} 🔄 Reloading nginx configuration...")
     run_cmd("ssh -i config/homesifu-serverstatus_key.pem azureuser@52.230.106.42 'docker exec homesifu-website nginx -s reload'", quiet=True)
 
-    # Check status
+    # Check status and health
     print(f"{get_timestamp()} 📊 Checking container status...")
-    status_result = run_cmd("ssh -i config/homesifu-serverstatus_key.pem azureuser@52.230.106.42 'docker ps | grep homesifu-website'", quiet=True)
-    if status_result.stdout:
+    status_result = run_cmd("ssh -i config/homesifu-serverstatus_key.pem azureuser@52.230.106.42 'docker ps --format \"table {{.Names}}\t{{.Status}}\t{{.Ports}}\" | grep homesifu-website'", quiet=True)
+
+    if status_result.stdout and "Up" in status_result.stdout:
         print(f"{get_timestamp()} ✅ Container is running successfully")
+        # Test if website is responding
+        health_check = run_cmd("curl -s -o /dev/null -w '%{http_code}' https://landing.homesifu.io", quiet=True)
+        if health_check.stdout == "200":
+            print(f"{get_timestamp()} 🏥 Health check passed - Website responding correctly")
+        else:
+            print(f"{get_timestamp()} ⚠️  Health check failed - Website may not be responding")
     else:
-        print(f"{get_timestamp()} ⚠️  Container status check failed")
+        print(f"{get_timestamp()} ❌ Container failed to start properly")
+        print(f"{get_timestamp()} 🔍 Debug info: {status_result.stdout}")
+        sys.exit(1)
 
     # Clean up temporary files on server
     print(f"{get_timestamp()} 🧹 Cleaning up temporary files...")
-    run_cmd("ssh -i config/homesifu-serverstatus_key.pem azureuser@52.230.106.42 'rm -rf /home/azureuser/homesifu-landing'", quiet=True)
+    run_cmd("ssh -i config/homesifu-serverstatus_key.pem azureuser@52.230.106.42 'rm -rf /home/azureuser/homesifu-landing /tmp/nginx.conf'", quiet=True)
 
     # Calculate deployment duration
     end_time = time.time()
@@ -74,6 +100,7 @@ def main():
     print(f"{get_timestamp()}    - ❌ Direct HTTP access removed for security")
     print(f"{get_timestamp()}    - 🛡️  All traffic now encrypted via Cloudflare SSL")
     print(f"{get_timestamp()} 📊 Deployment completed in {duration:.1f} seconds")
+    print(f"{get_timestamp()} 🧹 Cleanup completed - Docker system optimized")
 
 if __name__ == "__main__":
     main()
