@@ -322,6 +322,7 @@
                     </div>
                 </div>
 
+                <!-- Customer Details Form -->
                 <form id="appointmentForm" class="bg-gray-50 p-10 rounded-3xl shadow-xl max-w-2xl mx-auto">
                     <div class="grid md:grid-cols-2 gap-6 mb-6">
                         <div>
@@ -399,13 +400,26 @@
                     </div>
 
                     <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white h-14 px-8 rounded-lg font-semibold text-lg transition-colors" data-translate="bookStrategyCall">
-                        Book Your Strategy Call
+                        Continue to Book Your Call
                     </button>
                     
                     <p class="text-sm text-gray-500 mt-4 text-center" data-translate="privacyNotice">
                         By submitting this form, you agree to receive communications from HomeSifu. We respect your privacy and will never share your information.
                     </p>
                 </form>
+
+                <!-- Calendly Embed Widget (hidden initially) -->
+                <div id="calendlyWidget" class="bg-white p-6 rounded-3xl shadow-xl max-w-4xl mx-auto mt-8" style="display: none;">
+                    <div class="text-center mb-6">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Select Your Preferred Time</h3>
+                        <p class="text-gray-600">Choose a convenient 15-minute slot for your strategy call</p>
+                    </div>
+                    
+                    <!-- Calendly inline widget begin -->
+                    <div class="calendly-inline-widget" data-url="https://calendly.com/charlotteyong-homesifu/30min" style="min-width:320px;height:700px;"></div>
+                    <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+                    <!-- Calendly inline widget end -->
+                </div>
             </div>
         </div>
     </section>
@@ -477,6 +491,6 @@
         </div>
     </footer>
 
-    <script src="js/script.js"></script>
+    <script src="js/script.js?v=widget-fix-v5"></script>
 </body>
 </html>

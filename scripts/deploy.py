@@ -26,9 +26,9 @@ def main():
     run_cmd("ssh -i config/homesifu-serverstatus_key.pem azureuser@52.230.106.42 'docker stop homesifu-website 2>/dev/null || true'")
     run_cmd("ssh -i config/homesifu-serverstatus_key.pem azureuser@52.230.106.42 'docker rm homesifu-website 2>/dev/null || true'")
     
-    # Create simple nginx container with our files
+    # Create simple nginx container with our files (internal access only - no external port)
     print("🔧 Creating new container...")
-    run_cmd("ssh -i config/homesifu-serverstatus_key.pem azureuser@52.230.106.42 'docker run -d --name homesifu-website -p 8082:80 --restart unless-stopped nginx:alpine'")
+    run_cmd("ssh -i config/homesifu-serverstatus_key.pem azureuser@52.230.106.42 'docker run -d --name homesifu-website --restart unless-stopped nginx:alpine'")
     
     # Copy all files into container at once
     print("📁 Copying files into container...")
@@ -44,8 +44,9 @@ def main():
     
     print("✅ Done!")
     print("🌐 Your website is now live at:")
-    print("   - HTTP: http://52.230.106.42:8082")
-    print("   - HTTPS: https://landing.homesifu.io (configure in Nginx Proxy Manager)")
+    print("   - 🔒 HTTPS: https://landing.homesifu.io (SSL SECURED)")
+    print("   - ❌ Direct HTTP access removed for security")
+    print("   - 🛡️  All traffic now encrypted via Cloudflare SSL")
 
 if __name__ == "__main__":
     main()

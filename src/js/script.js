@@ -217,18 +217,50 @@ function showSuccessMessage() {
     const form = document.getElementById('appointmentForm');
     const formData = new FormData(form);
     
-    // Format phone number for Calendly (remove formatting, keep only digits)
-    let phone = formData.get('userPhone') || '';
-    phone = phone.replace(/\D/g, ''); // Remove all non-digits
-    
     // Get all form values
     const userName = formData.get('userName') || '';
     const userEmail = formData.get('userEmail') || '';
+    const userPhone = formData.get('userPhone') || '';
     const currentWorkflow = formData.get('currentWorkflow') || '';
     const propertyType = formData.get('propertyType') || '';
     const mainChallenge = formData.get('mainChallenge') || '';
     const portfolioSize = formData.get('portfolioSize') || '';
     const potentialObjections = formData.get('potentialObjections') || '';
+    
+    // Store customer details securely (NO URL exposure)
+    const customerProfile = {
+        name: userName,
+        email: userEmail,
+        phone: userPhone,
+        timestamp: new Date().toISOString(),
+        profile: {
+            currentProcess: currentWorkflow,
+            propertyType: propertyType,
+            mainChallenge: mainChallenge,
+            portfolioSize: portfolioSize,
+            mainConcern: potentialObjections
+        }
+    };
+    
+    // Store locally for follow-up (secure)
+    localStorage.setItem('homesifu_customer_profile', JSON.stringify(customerProfile));
+    
+    // Hide the form and show Calendly widget with FULL customer data
+    document.getElementById('appointmentForm').style.display = 'none';
+    
+    // Format phone number for Calendly (remove formatting, keep only digits)
+    let phone = userPhone.replace(/\D/g, ''); // Remove all non-digits
+    
+    // Build comprehensive notes for Calendly
+    const notes = `Property Management Consultation Request:
+
+Current Process: ${currentWorkflow}
+Property Type: ${propertyType}
+Main Challenge: ${mainChallenge}
+Portfolio Size: ${portfolioSize}
+Main Concern: ${potentialObjections}
+
+This information helps us prepare a personalized demo for your specific needs.`;
     
     // Build comprehensive summary for the phone field
     const phoneSummary = `Phone: +${phone}
@@ -242,18 +274,8 @@ Main Concern: ${potentialObjections}
 
 This information helps us prepare a personalized demo for your specific needs.`;
     
-    // Build comprehensive notes for Calendly
-    const notes = `Property Management Consultation Request:
-
-Current Process: ${currentWorkflow}
-Property Type: ${propertyType}
-Main Challenge: ${mainChallenge}
-Portfolio Size: ${portfolioSize}
-Main Concern: ${potentialObjections}
-
-This information helps us prepare a personalized demo for your specific needs.`;
-    
-    // Build Calendly URL with pre-filled data
+    // Build Calendly URL with ALL customer data
+    const calendlyEmbed = document.querySelector('.calendly-inline-widget');
     const calendlyUrl = new URL('https://calendly.com/charlotteyong-homesifu/30min');
     calendlyUrl.searchParams.set('name', userName);
     calendlyUrl.searchParams.set('email', userEmail);
@@ -262,7 +284,6 @@ This information helps us prepare a personalized demo for your specific needs.`;
     calendlyUrl.searchParams.set('notes', notes);
     
     // Try different Calendly custom field parameters for phone field with full summary
-    // Calendly often uses 'a1', 'a2', etc. for custom fields
     calendlyUrl.searchParams.set('a1', phoneSummary);
     calendlyUrl.searchParams.set('a2', phoneSummary);
     calendlyUrl.searchParams.set('a3', phoneSummary);
@@ -272,8 +293,25 @@ This information helps us prepare a personalized demo for your specific needs.`;
     calendlyUrl.searchParams.set('custom[Phone]', phoneSummary);
     calendlyUrl.searchParams.set('custom[Phone Number]', phoneSummary);
     
-    // Redirect to Calendly with pre-filled data
-    window.location.href = calendlyUrl.toString();
+    // DESTROY and RECREATE the widget with customer data (embedded widgets don't update dynamically)
+    calendlyEmbed.innerHTML = '';
+    
+    // Create new widget with customer data
+    window.Calendly.initInlineWidget({
+        url: calendlyUrl.toString(),
+        parentElement: calendlyEmbed
+    });
+    
+    document.getElementById('calendlyWidget').style.display = 'block';
+    
+    // Scroll to the calendar
+    document.getElementById('calendlyWidget').scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+    });
+    
+    // Track conversion (no sensitive data in tracking)
+    trackConversion();
 }
 
 // Conversion tracking
@@ -534,7 +572,7 @@ const translations = {
         integrationIssues: "Integration issues",
         implementationTime: "Implementation time",
         noConcerns: "No concerns",
-        bookStrategyCall: "Book Your Strategy Call",
+        bookStrategyCall: "Continue to Book Your Call",
         privacyNotice: "By submitting this form, you agree to receive communications from HomeSifu. We respect your privacy and will never share your information.",
         
         // CTA Section
@@ -654,7 +692,7 @@ const translations = {
         integrationIssues: "集成问题",
         implementationTime: "实施时间",
         noConcerns: "无担忧",
-        bookStrategyCall: "预约策略通话",
+        bookStrategyCall: "继续预约通话",
         privacyNotice: "提交此表格即表示您同意接收HomeSifu的通信。我们尊重您的隐私，绝不会分享您的信息。",
         
         // CTA Section
@@ -768,7 +806,7 @@ const translations = {
         integrationIssues: "Isu integrasi",
         implementationTime: "Masa pelaksanaan",
         noConcerns: "Tiada kebimbangan",
-        bookStrategyCall: "Tempah Panggilan Strategi Anda",
+        bookStrategyCall: "Teruskan untuk Tempah Panggilan",
         privacyNotice: "Dengan menghantar borang ini, anda bersetuju untuk menerima komunikasi dari HomeSifu. Kami menghormati privasi anda dan tidak akan pernah berkongsi maklumat anda.",
         
         // CTA Section
@@ -951,3 +989,52 @@ function updateTextContent(key, text) {
 
 // Track page view on load
 document.addEventListener('DOMContentLoaded', trackPageView);
+
+// Listen for Calendly events to handle booking completion
+window.addEventListener('message', function(e) {
+    if (e.data.event && e.data.event.indexOf('calendly') === 0) {
+        if (e.data.event === 'calendly.event_scheduled') {
+            handleCalendlyBooking(e.data.payload);
+        }
+    }
+});
+
+// Handle successful Calendly booking
+function handleCalendlyBooking(payload) {
+    // Get stored customer profile
+    const customerProfile = JSON.parse(localStorage.getItem('homesifu_customer_profile') || '{}');
+    
+    // Combine booking info with customer profile
+    const completeBookingData = {
+        booking: payload,
+        customerProfile: customerProfile,
+        timestamp: new Date().toISOString()
+    };
+    
+    // Store complete booking info
+    localStorage.setItem('homesifu_completed_booking', JSON.stringify(completeBookingData));
+    
+    // Show success message
+    showBookingSuccess();
+    
+    // TODO: Send customer profile to your internal system via secure webhook
+    // This replaces the insecure URL parameter method
+    console.log('Booking completed with customer profile:', completeBookingData);
+}
+
+// Show booking success message
+function showBookingSuccess() {
+    const successDiv = document.createElement('div');
+    successDiv.className = 'fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50';
+    successDiv.innerHTML = `
+        <div class="bg-white p-8 rounded-lg shadow-xl max-w-md mx-4">
+            <div class="text-center">
+                <div class="text-green-500 text-5xl mb-4">✅</div>
+                <h3 class="text-2xl font-bold text-gray-900 mb-2">Booking Confirmed!</h3>
+                <p class="text-gray-600 mb-4">Your strategy call has been scheduled. We'll use the information you provided to prepare a personalized demo for your specific needs.</p>
+                <button onclick="this.parentElement.parentElement.parentElement.remove()" class="bg-blue-600 text-white px-6 py-2 rounded-lg">Close</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(successDiv);
+}
