@@ -495,10 +495,12 @@ const translations = {
         
         // Appointment Section
         appointmentTitle: "Book a 15-Minute Strategy Call",
+        moneyBackSubtitle: "Book now for a free 90 days money back guarantee",
         appointmentSubtitle: "Discover how HomeSifu can transform your property management. Book your preferred 15-min time slot and get a personalized demo.",
         minuteSession: "15-Minute Session",
         personalizedDemo: "Personalized Demo",
         noObligation: "No Obligation",
+        physicalDemo: "Physical Demo",
         fullName: "Full Name *",
         email: "Email *",
         phoneNumber: "Phone Number *",
@@ -613,10 +615,12 @@ const translations = {
         
         // Appointment Section
         appointmentTitle: "预约15分钟策略通话",
+        moneyBackSubtitle: "立即预约享受免费90天退款保证",
         appointmentSubtitle: "了解HomeSifu如何改变您的物业管理。预约您首选的15分钟时间段并获得个性化演示。",
         minuteSession: "15分钟会议",
         personalizedDemo: "个性化演示",
         noObligation: "无义务",
+        physicalDemo: "实体演示",
         fullName: "全名 *",
         email: "邮箱 *",
         phoneNumber: "电话号码 *",
@@ -731,10 +735,12 @@ const translations = {
         
         // Appointment Section
         appointmentTitle: "Tempah Panggilan Strategi 15 Minit",
+        moneyBackSubtitle: "Tempah sekarang untuk jaminan wang balik 90 hari percuma",
         appointmentSubtitle: "Temui bagaimana HomeSifu boleh mengubah pengurusan harta tanah anda. Tempah slot masa 15 minit pilihan anda dan dapatkan demo peribadi.",
         minuteSession: "Sesi 15 Minit",
         personalizedDemo: "Demo Peribadi",
         noObligation: "Tiada Obligasi",
+        physicalDemo: "Demo Fizikal",
         fullName: "Nama Penuh *",
         email: "E-mel *",
         phoneNumber: "Nombor Telefon *",
@@ -865,10 +871,12 @@ function changeLanguage(language) {
     
     // Update appointment section
     updateTextContent('appointmentTitle', currentLang.appointmentTitle);
+    updateTextContent('moneyBackSubtitle', currentLang.moneyBackSubtitle);
     updateTextContent('appointmentSubtitle', currentLang.appointmentSubtitle);
     updateTextContent('minuteSession', currentLang.minuteSession);
     updateTextContent('personalizedDemo', currentLang.personalizedDemo);
     updateTextContent('noObligation', currentLang.noObligation);
+    updateTextContent('physicalDemo', currentLang.physicalDemo);
     updateTextContent('fullName', currentLang.fullName);
     updateTextContent('email', currentLang.email);
     updateTextContent('phoneNumber', currentLang.phoneNumber);
