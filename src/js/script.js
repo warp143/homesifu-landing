@@ -675,12 +675,6 @@ const translations = {
         careers: "职业",
         copyright: "© 2025 HomeSifu. 保留所有权利。",
         
-        // Form Options
-        selectCurrentProcess: "选择您当前的流程",
-        selectPropertyType: "选择房产类型",
-        selectBiggestChallenge: "选择您最大的挑战",
-        selectPortfolioSize: "选择投资组合规模",
-        selectMainConcern: "选择主要关注点"
     },
     ms: {
         // Header
