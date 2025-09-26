@@ -33,6 +33,15 @@ def main():
     # Copy all files into container at once
     print("📁 Copying files into container...")
     run_cmd("ssh -i config/homesifu-serverstatus_key.pem azureuser@52.230.106.42 'docker cp /home/azureuser/homesifu-landing/. homesifu-website:/usr/share/nginx/html/'")
+
+    # Copy custom nginx configuration
+    print("🔧 Copying nginx configuration...")
+    run_cmd("scp -i config/homesifu-serverstatus_key.pem docker/nginx.conf azureuser@52.230.106.42:/tmp/nginx.conf")
+    run_cmd("ssh -i config/homesifu-serverstatus_key.pem azureuser@52.230.106.42 'docker cp /tmp/nginx.conf homesifu-website:/etc/nginx/nginx.conf'")
+
+    # Reload nginx configuration to apply changes
+    print("🔄 Reloading nginx configuration...")
+    run_cmd("ssh -i config/homesifu-serverstatus_key.pem azureuser@52.230.106.42 'docker exec homesifu-website nginx -s reload'")
     
     # Check status
     print("📊 Checking container status...")
