@@ -22,6 +22,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HomeSifu - Manage 100 Properties in 1 Minute a Day | Free Demo</title>
 
+    <!-- Disable console warnings -->
+    <meta name="environment" content="production">
+    <script>
+        // Force disable console warnings - make it completely immutable
+        try {
+            Object.defineProperty(window.console, 'warn', {
+                value: function() { return undefined; },
+                writable: false,
+                configurable: false
+            });
+
+            // Also override any attempts to redefine it
+            const originalDefineProperty = Object.defineProperty;
+            Object.defineProperty = function(obj, prop, descriptor) {
+                if (obj === window.console && prop === 'warn') {
+                    return; // Block any attempts to redefine console.warn
+                }
+                return originalDefineProperty.apply(this, arguments);
+            };
+        } catch(e) {
+            // Fallback: simple override
+            console.warn = function() {};
+        }
+    </script>
+
     <!-- IMMEDIATE console warning suppression - loads FIRST -->
     <script>
         // Override console.warn IMMEDIATELY before any other scripts load
@@ -51,7 +76,7 @@
         };
     </script>
 
-    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
 </head>
