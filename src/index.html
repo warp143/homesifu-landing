@@ -22,6 +22,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HomeSifu - Manage 100 Properties in 1 Minute a Day | Free Demo</title>
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Suppress third-party console warnings -->
+    <script>
+        // Override console methods to suppress third-party warnings
+        const originalWarn = console.warn;
+        const originalError = console.error;
+
+        // Suppress specific third-party warnings
+        const suppressPatterns = [
+            'cdn.tailwindcss.com should not be used in production',
+            'Failed to find a valid digest in the \'integrity\' attribute',
+            'Potential permissions policy violation'
+        ];
+
+        console.warn = function(...args) {
+            const message = args.join(' ');
+            if (suppressPatterns.some(pattern => message.includes(pattern))) {
+                return; // Suppress matching warnings
+            }
+            originalWarn.apply(console, args);
+        };
+
+        console.error = function(...args) {
+            const message = args.join(' ');
+            if (suppressPatterns.some(pattern => message.includes(pattern))) {
+                return; // Suppress matching errors
+            }
+            originalError.apply(console, args);
+        };
+    </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
 </head>
