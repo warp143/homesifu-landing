@@ -1,13 +1,15 @@
 {
-  "host": "52.230.106.42",
+  "host": "172.188.96.148",
+  "port": 22,
   "user": "azureuser",
-  "ssh_key_path": "/Users/amk/Landing Page/config/homesifu-serverstatus_key.pem",
+  "password": "$12VdLiEwQHQxHwqu",
+  "ssh_key_path": "config/backup_server_key",
   "remote_path": "/home/azureuser/HomeSifu_Marketing",
   "connection_timeout": 10,
-  "description": "Azure server login configuration for HomeSifu Marketing deployment",
+  "description": "Azure Development/Backup Server for HomeSifu Marketing deployment",
   "usage": {
-    "ssh_command": "ssh -i config/homesifu-serverstatus_key.pem azureuser@52.230.106.42",
-    "scp_upload": "scp -i config/homesifu-serverstatus_key.pem local_file azureuser@52.230.106.42:/remote/path",
-    "rsync_sync": "rsync -avz -e 'ssh -i config/homesifu-serverstatus_key.pem' local_dir/ azureuser@52.230.106.42:/remote/path/"
+    "ssh_command": "ssh -i config/backup_server_key -p 22 azureuser@172.188.96.148",
+    "scp_upload": "scp -i config/backup_server_key local_file azureuser@172.188.96.148:/remote/path",
+    "rsync_sync": "rsync -avz -e 'ssh -i config/backup_server_key' local_dir/ azureuser@172.188.96.148:/remote/path/"
   }
 }

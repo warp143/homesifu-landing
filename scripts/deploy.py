@@ -24,54 +24,54 @@ def main():
 
     # Create directory on server
     print(f"{get_timestamp()} 📁 Creating directory...")
-    run_cmd("ssh -i config/homesifu-serverstatus_key.pem azureuser@52.230.106.42 'mkdir -p /home/azureuser/homesifu-landing'")
+    run_cmd("ssh -i config/backup_server_key azureuser@172.188.96.148 'mkdir -p /home/azureuser/homesifu-landing'")
 
     # Upload files using rsync (optimized with progress and bandwidth limiting)
     print(f"{get_timestamp()} 📤 Uploading files with rsync...")
-    run_cmd("rsync -az --delete --bwlimit=10000 --info=progress2 -e 'ssh -i config/homesifu-serverstatus_key.pem' src/ azureuser@52.230.106.42:/home/azureuser/homesifu-landing/")
+    run_cmd("rsync -az --delete --bwlimit=10000 --info=progress2 -e 'ssh -i config/backup_server_key' src/ azureuser@172.188.96.148:/home/azureuser/homesifu-landing/")
 
     # Stop and remove existing container
     print(f"{get_timestamp()} 🔧 Stopping old container...")
-    run_cmd("ssh -i config/homesifu-serverstatus_key.pem azureuser@52.230.106.42 'docker stop homesifu-website 2>/dev/null || true'", quiet=True)
-    run_cmd("ssh -i config/homesifu-serverstatus_key.pem azureuser@52.230.106.42 'docker rm homesifu-website 2>/dev/null || true'", quiet=True)
+    run_cmd("ssh -i config/backup_server_key azureuser@172.188.96.148 'docker stop homesifu-website 2>/dev/null || true'", quiet=True)
+    run_cmd("ssh -i config/backup_server_key azureuser@172.188.96.148 'docker rm homesifu-website 2>/dev/null || true'", quiet=True)
 
     # Clean up any orphaned containers
     print(f"{get_timestamp()} 🧹 Cleaning up orphaned containers...")
-    run_cmd("ssh -i config/homesifu-serverstatus_key.pem azureuser@52.230.106.42 'docker container prune -f'", quiet=True)
+    run_cmd("ssh -i config/backup_server_key azureuser@172.188.96.148 'docker container prune -f'", quiet=True)
 
     # Clean up dangling Docker images
     print(f"{get_timestamp()} 🧹 Cleaning up unused Docker images...")
-    run_cmd("ssh -i config/homesifu-serverstatus_key.pem azureuser@52.230.106.42 'docker image prune -f'", quiet=True)
+    run_cmd("ssh -i config/backup_server_key azureuser@172.188.96.148 'docker image prune -f'", quiet=True)
 
     # Clean up unused Docker volumes
     print(f"{get_timestamp()} 🧹 Cleaning up unused Docker volumes...")
-    run_cmd("ssh -i config/homesifu-serverstatus_key.pem azureuser@52.230.106.42 'docker volume prune -f'", quiet=True)
+    run_cmd("ssh -i config/backup_server_key azureuser@172.188.96.148 'docker volume prune -f'", quiet=True)
 
     # Clean up Docker build cache and unused networks
     print(f"{get_timestamp()} 🧹 Cleaning up Docker build cache...")
-    run_cmd("ssh -i config/homesifu-serverstatus_key.pem azureuser@52.230.106.42 'docker builder prune -f'", quiet=True)
-    run_cmd("ssh -i config/homesifu-serverstatus_key.pem azureuser@52.230.106.42 'docker network prune -f'", quiet=True)
+    run_cmd("ssh -i config/backup_server_key azureuser@172.188.96.148 'docker builder prune -f'", quiet=True)
+    run_cmd("ssh -i config/backup_server_key azureuser@172.188.96.148 'docker network prune -f'", quiet=True)
 
     # Create simple nginx container with our files (internal access only - no external port)
     print(f"{get_timestamp()} 🔧 Creating new container...")
-    run_cmd("ssh -i config/homesifu-serverstatus_key.pem azureuser@52.230.106.42 'docker run -d --name homesifu-website --restart unless-stopped nginx:alpine'")
+    run_cmd("ssh -i config/backup_server_key azureuser@172.188.96.148 'docker run -d --name homesifu-website --restart unless-stopped nginx:alpine'")
 
     # Copy all files into container at once
     print(f"{get_timestamp()} 📁 Copying files into container...")
-    run_cmd("ssh -i config/homesifu-serverstatus_key.pem azureuser@52.230.106.42 'docker cp /home/azureuser/homesifu-landing/. homesifu-website:/usr/share/nginx/html/'", quiet=True)
+    run_cmd("ssh -i config/backup_server_key azureuser@172.188.96.148 'docker cp /home/azureuser/homesifu-landing/. homesifu-website:/usr/share/nginx/html/'", quiet=True)
 
     # Copy custom nginx configuration
     print(f"{get_timestamp()} 🔧 Copying nginx configuration...")
-    run_cmd("scp -i config/homesifu-serverstatus_key.pem docker/nginx.conf azureuser@52.230.106.42:/tmp/nginx.conf", quiet=True)
-    run_cmd("ssh -i config/homesifu-serverstatus_key.pem azureuser@52.230.106.42 'docker cp /tmp/nginx.conf homesifu-website:/etc/nginx/nginx.conf'", quiet=True)
+    run_cmd("scp -i config/backup_server_key docker/nginx.conf azureuser@172.188.96.148:/tmp/nginx.conf", quiet=True)
+    run_cmd("ssh -i config/backup_server_key azureuser@172.188.96.148 'docker cp /tmp/nginx.conf homesifu-website:/etc/nginx/nginx.conf'", quiet=True)
 
     # Reload nginx configuration to apply changes
     print(f"{get_timestamp()} 🔄 Reloading nginx configuration...")
-    run_cmd("ssh -i config/homesifu-serverstatus_key.pem azureuser@52.230.106.42 'docker exec homesifu-website nginx -s reload'", quiet=True)
+    run_cmd("ssh -i config/backup_server_key azureuser@172.188.96.148 'docker exec homesifu-website nginx -s reload'", quiet=True)
 
     # Check status and health
     print(f"{get_timestamp()} 📊 Checking container status...")
-    status_result = run_cmd("ssh -i config/homesifu-serverstatus_key.pem azureuser@52.230.106.42 'docker ps --format \"table {{.Names}}\t{{.Status}}\t{{.Ports}}\" | grep homesifu-website'", quiet=True)
+    status_result = run_cmd("ssh -i config/backup_server_key azureuser@172.188.96.148 'docker ps --format \"table {{.Names}}\t{{.Status}}\t{{.Ports}}\" | grep homesifu-website'", quiet=True)
 
     if status_result.stdout and "Up" in status_result.stdout.decode():
         print(f"{get_timestamp()} ✅ Container is running successfully")
@@ -88,7 +88,7 @@ def main():
 
     # Clean up temporary files on server
     print(f"{get_timestamp()} 🧹 Cleaning up temporary files...")
-    run_cmd("ssh -i config/homesifu-serverstatus_key.pem azureuser@52.230.106.42 'rm -rf /home/azureuser/homesifu-landing /tmp/nginx.conf'", quiet=True)
+    run_cmd("ssh -i config/backup_server_key azureuser@172.188.96.148 'rm -rf /home/azureuser/homesifu-landing /tmp/nginx.conf'", quiet=True)
 
     # Calculate deployment duration
     end_time = time.time()
