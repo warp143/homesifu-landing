@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  nginx-proxy-manager:
+    image: 'jc21/nginx-proxy-manager:latest'
+    container_name: npm
+    restart: unless-stopped
+    ports:
+      # HTTP
+      - '80:80'
+      # HTTPS
+      - '443:443'
+      # Admin Web UI
+      - '81:81'
+    # Uncomment environment section if you have issues with IPv6
+    # environment:
+    #   DISABLE_IPV6: 'true'
+    volumes:
+      - npm-data:/data
+      - npm-letsencrypt:/etc/letsencrypt
+    networks:
+      - npm-network
+
+volumes:
+  npm-data:
+    driver: local
+  npm-letsencrypt:
+    driver: local
+
+networks:
+  npm-network:
+    driver: bridge
+
